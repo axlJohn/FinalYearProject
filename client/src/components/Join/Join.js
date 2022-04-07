@@ -20,7 +20,7 @@ export default function SignIn() {
         event listening for user input */}
           <input placeholder="Name" className="joinInput" type="text" onChange={(event) => setName(event.target.value)} />
         </div>
-        <div>
+        <div> {/* "mt-##" = 'margin top' number, used to separate these buttons*/}
           <input placeholder="Room" className="joinInput mt-20" type="text" onChange={(event) => setRoom(event.target.value)} />
         </div>{/*Rules preventing null entries
         Requires both name and room to be entered, can't submit without one or the other */}
