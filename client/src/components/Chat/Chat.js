@@ -17,6 +17,7 @@ const Chat = ({ location }) => {
     // endpoint to server. stored here for cleanness of code.
     const ENDPOINT = 'localhost:5000';
 
+
     useEffect(() => {
         // location comes from react router. allows us to get a url back
         const { name, room } = queryString.parse(location.search);
@@ -26,7 +27,17 @@ const Chat = ({ location }) => {
         setName(name);
         setRoom(room);
 
-        console.log(socket);
+        // socket 'emitting' the join event
+        socket.emit('join', {name, room}, () => {
+
+        });
+    
+        return() => {
+            // announces when user leaves
+            socket.emit('disconnect');
+            // switches socket off
+            socket.off();
+        }
     }, [ENDPOINT, location.search])
 
     return (

@@ -9,11 +9,15 @@ const socketio = require('socket.io');
 // http requests are slow, so not useful for our real time communication
 const http = require('http');
 
+// functions taken from users.js
+const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
+
 // declaring port - "use environment's port OR use 5000"
 const PORT = process.env.PORT || 5000
 
 // requires router as require
 const router = require('./router');
+const { callbackify } = require('util');
 
 // running app from express
 const app = express();
@@ -26,6 +30,11 @@ const io = socketio(server);
 // built-in io methods
 io.on('connection', (socket) => {
     console.log("There's a new connection being made!");
+
+    // socket pushing details of name/room to console log
+    socket.on('join', ({ name, room}) => {
+        console.log(name, room);
+    })
 
     socket.on('disconnect', () => {
         console.log("A user has just disconnected!");
