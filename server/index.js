@@ -29,12 +29,31 @@ const io = socketio(server);
 // keeping track of/reporting when people log in/out
 // built-in io methods
 io.on('connection', (socket) => {
-    console.log("There's a new connection being made!");
+    socket.on('join', ({ name, room }, callback) => {
+        const {error, user } = addUser({ id: socket.id, name, room });
 
-    // socket pushing details of name/room to console log
-    socket.on('join', ({ name, room}) => {
-        console.log(name, room);
-    })
+        // error handling is dynamically coming based on the specific error
+        if(error) return callback(error);
+
+        // custom welcome message for user
+        socket.emit('message', { user: 'admin', text: '${user.name}, welcome to the room: ${user.room}' });
+        socket.broadcast.to(user.room).emit('message', { user: 'admin', text: '${user.name} has joined the room!' });
+
+        // if no errors...
+        socket.join(user.room);
+
+        callback();
+    });
+
+
+    socket.on('sendMessage', (message, callback) => {
+        const user = getUser(socket.id);
+
+        io.to(user.room).emit('message', { user: user.name,text:message});
+
+        callback();
+    });
+
 
     socket.on('disconnect', () => {
         console.log("A user has just disconnected!");
