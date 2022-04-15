@@ -1,6 +1,6 @@
 import React from 'react';
 
-// will keep chat scrollingd own to bottom/most current message automatically
+// will keep chat scrolling down to bottom/most current message automatically
 import ScrollToBottom from 'react-scroll-to-bottom';
 
 import Message from './Message/Message';
@@ -8,7 +8,7 @@ import Message from './Message/Message';
 import './Messages.css';
 
 const Messages = ({ messages, name}) => (
-    <ScrollToBottom>
+    <ScrollToBottom className="messages">
         {messages.map((message, i) => <div key={i}><Message message={message} name={name}/></div>)}
     </ScrollToBottom>
 )

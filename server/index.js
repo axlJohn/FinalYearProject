@@ -35,12 +35,16 @@ io.on('connection', (socket) => {
         // error handling is dynamically coming based on the specific error
         if(error) return callback(error);
 
-        // custom welcome message for user
+        // user sees admin welcome them to room
         socket.emit('message', { user: 'admin', text: '${user.name}, welcome to the room: ${user.room}' });
+        // room sees who has joined
         socket.broadcast.to(user.room).emit('message', { user: 'admin', text: '${user.name} has joined the room!' });
 
         // if no errors...
         socket.join(user.room);
+
+        // find all users in room
+        io.to(user.room).emit('roomData', {room: user.room, users: getUsersInRoom(user.room)})
 
         callback();
     });
@@ -49,7 +53,12 @@ io.on('connection', (socket) => {
     socket.on('sendMessage', (message, callback) => {
         const user = getUser(socket.id);
 
+        //
         io.to(user.room).emit('message', { user: user.name,text:message});
+        //
+        io.to(user.room).emit('roomData',  { room:user.room, users: getUsersInRoom(user.room)});
+
+
 
         callback();
     });
@@ -58,6 +67,7 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         const user = removeUser(socket.id);
 
+        // lets chat know user has left
         if(user){
             io.to(user.room).emit('message', {user: 'admin', text: '${user.name} has left the chat!'})
         }
