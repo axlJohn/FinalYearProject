@@ -82,7 +82,7 @@ const Chat = ({ location }) => {
               {/* holds send message details */}
               <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
           </div>
-          <TextContainer users={users}/>
+          {/* <TextContainer users={users}/> */}
         </div>
       );
 }

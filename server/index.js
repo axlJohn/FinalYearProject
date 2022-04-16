@@ -24,7 +24,13 @@ const app = express();
 // running server
 const server = http.createServer(app);
 // calling io, passing server into socketio
-const io = socketio(server);
+const io = socketio(server, {
+    cors: {
+        origin: "localhost:3000",
+        // allowedHeaders: ["*"],
+        withCredentials: false
+    }
+});
 
 // keeping track of/reporting when people log in/out
 // built-in io methods
