@@ -9,6 +9,9 @@ const socketio = require('socket.io');
 // http requests are slow, so not useful for our real time communication
 const http = require('http');
 
+// initializing cors
+const cors = require('cors');
+
 // functions taken from users.js
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
 
@@ -24,13 +27,7 @@ const app = express();
 // running server
 const server = http.createServer(app);
 // calling io, passing server into socketio
-const io = socketio(server, {
-    cors: {
-        origin: "localhost:3000",
-        // allowedHeaders: ["*"],
-        withCredentials: false
-    }
-});
+const io = socketio(server);
 
 // keeping track of/reporting when people log in/out
 // built-in io methods
