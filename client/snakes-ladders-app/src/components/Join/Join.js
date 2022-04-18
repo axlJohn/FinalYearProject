@@ -22,7 +22,7 @@ const Join = () => {
                 setRoomname(event.target.value);
             }}/>
 
-            <Link onClick={e => (!username || !roomname) ? e.preventDefault() : null} to={`/chat?name=${username}&room=${roomname}`}>
+            <Link onClick={event => (!username || !roomname) ? event.preventDefault() : null} to={`/chat?name=${username}&room=${roomname}`}>
                 <button className={'button mt-20'} type="submit">Sign In</button>
             </Link>
             
