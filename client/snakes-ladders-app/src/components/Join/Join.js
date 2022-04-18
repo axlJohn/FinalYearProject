@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import io from 'socket.io-client';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // handling routing to main page
 
-const socket = io.connect('http://localhost:5000');
 
 const Join = () => {
     const [username, setUsername] = useState(""); // state that represents username
@@ -22,6 +20,7 @@ const Join = () => {
                 setRoomname(event.target.value);
             }}/>
 
+            {/* If user doesn't specify a username and roomname, do nothing */}
             <Link onClick={event => (!username || !roomname) ? event.preventDefault() : null} to={`/chat?name=${username}&room=${roomname}`}>
                 <button className={'button mt-20'} type="submit">Sign In</button>
             </Link>
